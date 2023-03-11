@@ -1,0 +1,54 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+
+jobs:
+  bundle-ios:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: yarn install
+      - name: Bundle
+        run: nx bundle-ios bridge-commander
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-bundle
+          path: ./dist/apps/bridge-commander/ios/main.jsbundle
+
+  test:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+    - name: Install dependencies
+      run: yarn install
+    - name: Run Unit Tests
+      run: nx test bridge-commander
+
+  lint:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+    - name: Install dependencies
+      run: yarn install
+    - name: Lint
+      run: nx lint bridge-commander
+
+
