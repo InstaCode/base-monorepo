@@ -19,12 +19,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Bundle
-        run: npx nx bundle-ios ${{ github.repository.split("/").at(1)}}
+        run: npx nx bundle-ios ${{ (github.repository.split("/")).at(1)}}
       - name: Upload bundle
         uses: actions/upload-artifact@v3
         with:
           name: ios-bundle
-          path: ./dist/apps/${{ github.repository.split("/").at(1)}}/ios/main.jsbundle
+          path: ./dist/apps/${{ (github.repository.split("/")).at(1)}}/ios/main.jsbundle
 
   test:
     runs-on: macos-latest
@@ -37,7 +37,7 @@ jobs:
     - name: Install dependencies
       run: yarn install
     - name: Run Unit Tests
-      run: npx nx test ${{ github.repository.split("/").at(1)}}
+      run: npx nx test ${{ (github.repository.split("/")).at(1)}}
 
   lint:
     runs-on: macos-latest
@@ -50,6 +50,6 @@ jobs:
     - name: Install dependencies
       run: yarn install
     - name: Lint
-      run: npx nx lint ${{ github.repository.split("/").at(1)}}
+      run: npx nx lint ${{ (github.repository.split("/")).at(1)}}
 
 
