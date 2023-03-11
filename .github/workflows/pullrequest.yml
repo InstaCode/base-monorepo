@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Bundle
-        run: nx bundle-ios bridge-commander
+        run: npx nx bundle-ios bridge-commander
       - name: Upload bundle
         uses: actions/upload-artifact@v3
         with:
@@ -40,7 +40,7 @@ jobs:
     - name: Install dependencies
       run: yarn install
     - name: Run Unit Tests
-      run: nx test bridge-commander
+      run: npx nx test bridge-commander
 
   lint:
     runs-on: macos-latest
@@ -53,6 +53,6 @@ jobs:
     - name: Install dependencies
       run: yarn install
     - name: Lint
-      run: nx lint bridge-commander
+      run: npx nx lint bridge-commander
 
 
