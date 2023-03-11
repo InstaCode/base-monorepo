@@ -18,13 +18,20 @@ jobs:
           node-version: 16
       - name: Install dependencies
         run: yarn install
+      - name: Get Repository Name
+        uses: actions/github-script@v6.4.0
+        id: repository-data
+        with:
+          script: |
+            const name = github.repository.split("/").at(1)
+            core.setOutput('repo-name', name)
       - name: Bundle
-        run: npx nx bundle-ios ${{ (github.repository.split("/")).at(1)}}
+        run: npx nx bundle-ios ${{ steps.repository-data.outputs.repo-name}}
       - name: Upload bundle
         uses: actions/upload-artifact@v3
         with:
           name: ios-bundle
-          path: ./dist/apps/${{ (github.repository.split("/")).at(1)}}/ios/main.jsbundle
+          path: ./dist/apps/${{ steps.repository-data.outputs.repo-name}}/ios/main.jsbundle
 
   test:
     runs-on: macos-latest
@@ -36,8 +43,15 @@ jobs:
         node-version: 16
     - name: Install dependencies
       run: yarn install
+    - name: Get Repository Name
+      uses: actions/github-script@v6.4.0
+      id: repository-data
+      with:
+        script: |
+          const name = github.repository.split("/").at(1)
+          core.setOutput('repo-name', name)
     - name: Run Unit Tests
-      run: npx nx test ${{ (github.repository.split("/")).at(1)}}
+      run: npx nx test ${{ steps.repository-data.outputs.repo-name}}
 
   lint:
     runs-on: macos-latest
@@ -49,7 +63,14 @@ jobs:
         node-version: 16
     - name: Install dependencies
       run: yarn install
+    - name: Get Repository Name
+      uses: actions/github-script@v6.4.0
+      id: repository-data
+      with:
+        script: |
+          const name = github.repository.split("/").at(1)
+          core.setOutput('repo-name', name)
     - name: Lint
-      run: npx nx lint ${{ (github.repository.split("/")).at(1)}}
+      run: npx nx lint ${{ steps.repository-data.outputs.repo-name}}
 
 
