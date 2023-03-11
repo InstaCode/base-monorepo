@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: 16
           cache: yarn
@@ -24,8 +24,9 @@ jobs:
         id: repository-data
         with:
           script: |
-            const name = github.repository.split('/').at(1)
-            core.setOutput('repo-name', name)
+            const name = new String('${{github.repository}}')
+              const repoName = name.split('/').at(1)
+            core.setOutput('repo-name', repoName)
       - name: Bundle
         run: npx nx bundle-ios ${{ steps.repository-data.outputs.repo-name}}
       - name: Upload bundle
@@ -39,7 +40,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3.6.0
       with:
         node-version: 16
         cache: yarn
@@ -50,8 +51,9 @@ jobs:
       id: repository-data
       with:
         script: |
-          const name = github.repository.name.split('/').at(1)
-          core.setOutput('repo-name', name)
+            const name = new String('${{github.repository}}')
+            const repoName = name.split('/').at(1)
+            core.setOutput('repo-name', repoName)
     - name: Run Unit Tests
       run: npx nx test ${{ steps.repository-data.outputs.repo-name}}
 
@@ -60,7 +62,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3.6.0
       with:
         node-version: 16
         cache: yarn
@@ -71,8 +73,9 @@ jobs:
       id: repository-data
       with:
         script: |
-          const name = github.repository.name.split('/').at(1)
-          core.setOutput('repo-name', name)
+          const name = new String('${{github.repository}}')
+          const repoName = name.split('/').at(1)
+          core.setOutput('repo-name', repoName)
     - name: Lint
       run: npx nx lint ${{ steps.repository-data.outputs.repo-name}}
 
