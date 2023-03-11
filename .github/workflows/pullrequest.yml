@@ -25,7 +25,7 @@ jobs:
         with:
           script: |
             const name = new String('${{github.repository}}')
-              const repoName = name.split('/').at(1)
+            const repoName = name.split('/').at(1)
             core.setOutput('repo-name', repoName)
       - name: Bundle
         run: npx nx bundle-ios ${{ steps.repository-data.outputs.repo-name}}
