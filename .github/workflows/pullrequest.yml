@@ -10,6 +10,7 @@ on:
 jobs:
   bundle-ios:
     runs-on: macos-latest
+    if: github.repostiory != 'InstaCode/base-monorepo'
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js
@@ -24,8 +25,8 @@ jobs:
         id: repository-data
         with:
           script: |
-            const name: String = github.repository
-              const repoName = name.split('/').at(1)
+            const name = new String('${{github.repository}}')
+            const repoName = name.split('/').at(1)
             core.setOutput('repo-name', repoName)
       - name: Bundle
         run: npx nx bundle-ios ${{ steps.repository-data.outputs.repo-name}}
@@ -51,7 +52,7 @@ jobs:
       id: repository-data
       with:
         script: |
-            const name: String = github.repository
+            const name = new String('${{github.repository}}')
             const repoName = name.split('/').at(1)
             core.setOutput('repo-name', repoName)
     - name: Run Unit Tests
@@ -73,7 +74,7 @@ jobs:
       id: repository-data
       with:
         script: |
-          const name: String = github.repository
+          const name = new String('${{github.repository}}')
           const repoName = name.split('/').at(1)
           core.setOutput('repo-name', repoName)
     - name: Lint
